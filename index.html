@@ -555,7 +555,7 @@ body.locked {
    <div id="wedding-cover">
     <div class="cover-content" data-aos="fade-up">
         <h2 class="script-font">The Wedding Of</h2>
-        <h1 class="script-font" style="font-size: 4rem; margin: 20px 0;">Riko & Rizqi</h1>
+        <h1 class="script-font" style="font-size: 4rem; margin: 20px 0;">Rizqi & Riko</h1>
         <div class="hero-frame" style="width: 200px; height: 200px; margin: 0 auto 20px;">
             <img src="cover.jpg" type="foto/jpg" style="width: 100%; border-radius: 50%; border: 3px solid var(--gold);">
         </div>
@@ -767,7 +767,7 @@ body.locked {
     // 3. LOGIKA FORM KE GOOGLE SHEETS
     // ==========================================
     // GANTI LINK DI BAWAH INI DENGAN URL WEB APP GOOGLE SCRIPT ANDA
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyQfJ3wb7HfCPmF0Mqq_ccLhJ8u-lbaQW2dO5i3Vagw7tXGZeicycdR1vt_dJHRgp1HpA/exec'; 
+    const scriptURL = 'PASTE_URL_WEB_APP_GOOGLE_SCRIPT_DI_SINI'; 
     // ==========================================
     
     const form = document.forms['submit-to-google-sheet'];
@@ -831,63 +831,6 @@ body.locked {
             setTimeout(() => { btnText.innerText = "Salin No. Rekening"; }, 2000);
         });
     }
-        // === TAMBAHKAN KODE INI DI BAWAH LOGIKA FORM SUBMIT ===
-
-    // Fungsi untuk menarik data ucapan dari Google Sheets
-    function loadComments() {
-        const list = document.getElementById('message-list');
-        list.innerHTML = '<p style="text-align:center; font-style:italic;">Memuat ucapan...</p>';
-
-        fetch(scriptURL) // scriptURL ini sama dengan link Web App Google Script Anda
-            .then(response => response.json())
-            .then(data => {
-                list.innerHTML = ''; // Hapus teks "Memuat..."
-                
-                // Reset angka counter
-                countHadir = 0; countTidak = 0; countMaybe = 0;
-
-                // Balik urutan data agar ucapan terbaru ada di paling atas
-                data.reverse().forEach(item => {
-                    // Hanya proses baris yang ada namanya (mengabaikan baris kosong)
-                    if(item.Nama) {
-                        // Update angka di dashboard
-                        if (item.Kehadiran === 'Hadir') countHadir++;
-                        else if (item.Kehadiran === 'Tidak Hadir') countTidak++;
-                        else if (item.Kehadiran === 'Inshaallah') countMaybe++;
-
-                        // Buat kotak ucapan
-                        const newItem = document.createElement('div');
-                        newItem.className = 'message-item';
-                        let color = item.Kehadiran === 'Hadir' ? '#2e7d32' : (item.Kehadiran === 'Tidak Hadir' ? '#c62828' : '#ef6c00');
-                        
-                        newItem.innerHTML = `
-                            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid ${color}; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <b style="color: var(--brown);">${item.Nama}</b>
-                                    <small style="color: ${color}; font-weight: bold;">${item.Kehadiran}</small>
-                                </div>
-                                <p style="margin-top: 5px; font-size: 0.85rem; color: #555;">${item.Ucapan}</p>
-                            </div>`;
-                        list.appendChild(newItem);
-                    }
-                });
-
-                // Tampilkan angka terbaru ke layar
-                document.getElementById('count-hadir').innerText = countHadir;
-                document.getElementById('count-tidak').innerText = countTidak;
-                document.getElementById('count-maybe').innerText = countMaybe;
-            })
-            .catch(error => {
-                console.error('Gagal memuat ucapan:', error);
-                list.innerHTML = '<p style="text-align:center; color:#c62828;">Belum ada ucapan atau gagal memuat data.</p>';
-            });
-    }
-
-    // Jalankan fungsi penarikan data saat website pertama kali dibuka
-    window.onload = () => {
-        loadComments();
-    };
-    
 </script>
 </body>
 </html>
